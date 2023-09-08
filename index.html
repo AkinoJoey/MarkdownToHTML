@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Markdown To HTML</title>
+</head>
+
+<body>
+    <h2 class="text-center">Markdown To HTML</h2>
+    <div class="is-center mb-1">
+        <a id="preview-btn" class="button secondary" >Preview</a>
+        <a id="html-btn" class="button secondary" >HTML</a>
+        <a id="download-btn" class="button secondary">Download</a>
+    </div>
+    <div class="row is-center">
+        <div class="col-5">
+            <div id="editor-container" class="monaco-container"></div>
+        </div>
+        <div class="col-5">
+            <div id="preview-container" class="monaco-container" ></div>
+        </div>
+    </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.41.0/min/vs/loader.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
