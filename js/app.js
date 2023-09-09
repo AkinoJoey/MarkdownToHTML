@@ -1,54 +1,74 @@
 let previewContent = "preview";
+const previewContainer = document.getElementById('preview-container');
 const previewBtn = document.getElementById('preview-btn');
 const htmlBtn = document.getElementById('html-btn');
 const downloadBtn = document.getElementById('download-btn');
-
-previewBtn.addEventListener('click',function(){
-    previewContent = "preview";
-})
-
-htmlBtn.addEventListener('click',function(){
-    previewContent = "html";
-    console.log(previewContent);
-})
-
-downloadBtn.addEventListener('click',function(){
-    previewContent = "download";
-})
 
 require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.41.0/min/vs' }});
     
 require(['vs/editor/editor.main'], function() {
     const editor = monaco.editor.create(document.getElementById('editor-container'), {
-        value: '<!-- ここにmarkdownを入力してください -->',
+        value: '<!-- ここにmarkdownを入力してください -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',
         language: 'markdown'
     });
 
-
-    editor.onDidChangeModelContent(function(event) {
+    editor.onDidChangeModelContent(async function(event) {
         const markdown = editor.getValue();
+        let promise = returnParsedData(markdown);
+        let parsedText = await promise;
 
-        const requestOptions = {
-            method:'POST',
-            headers: {'Content-Type': 'text/plain'},
-            body: markdown
+        if(previewContent == "preview"){
+            previewContainer.innerHTML = parsedText;
+
+        }if (previewContent == "html") {
+            previewContainer.innerText = parsedText;
+
+        }
+    });
+
+    previewBtn.addEventListener('click',function(){
+        if(previewContent == "html"){
+            let promise =  returnParsedData(editor.getValue());
+
+            promise.then(result => {
+                previewContainer.innerHTML = result;
+            }).catch(error => {
+                console.error("Promiseでエラーが発生しました:", error);
+            });
         }
     
-        fetch('parse.php', requestOptions)
-            .then(response => response.text())
-            .then(data => {
-                const previewContainer = document.getElementById('preview-container');
-                
-                if(previewContent == "preview"){
-                    previewContainer.innerHTML = data;
+        previewContent = "preview";
+    })
+    
+    htmlBtn.addEventListener('click',function(){
 
-                }if (previewContent == "html") {
-                    previewContainer.innerText = data;
+        if(previewContent == "preview"){
+            let promise =  returnParsedData(editor.getValue());
 
-                }if(previewContent == "download"){
-                    console.log("download");                    
-                }
-                
+            promise.then(result => {
+                previewContainer.innerText = result;
+            }).catch(error => {
+                console.error("Promiseでエラーが発生しました:", error);
             });
-    });
+        }
+        previewContent = "html";
+    })
+    
+    downloadBtn.addEventListener('click',function(){
+        console.log("download");
+    })
+
 });
+
+async function returnParsedData(bodyData){
+    const requestOptions = {
+        method:'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: bodyData
+    }
+
+    let parsedData = await fetch('parse.php', requestOptions)
+                                .then(response => response.text());
+        
+    return parsedData;
+}
