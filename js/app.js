@@ -20,7 +20,7 @@ require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-e
     
 require(['vs/editor/editor.main'], function() {
     const editor = monaco.editor.create(document.getElementById('editor-container'), {
-        value: 'ここにmarkdownを入力してください',
+        value: '<!-- ここにmarkdownを入力してください -->',
         language: 'markdown'
     });
 
