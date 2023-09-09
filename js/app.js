@@ -54,10 +54,17 @@ require(['vs/editor/editor.main'], function() {
         previewContent = "html";
     })
     
-    downloadBtn.addEventListener('click',function(){
-        console.log("download");
-    })
+    downloadBtn.addEventListener('click',async function(){
+        if(previewContent == "html"){
+            let html = previewContainer.textContent
+            downloadHtml(html);
 
+        }if(previewContent == "preview"){
+            let promise =  returnParsedData(editor.getValue());
+            let html = await promise;
+            downloadHtml(html);
+        }
+    })
 });
 
 async function returnParsedData(bodyData){
@@ -71,4 +78,22 @@ async function returnParsedData(bodyData){
                                 .then(response => response.text());
         
     return parsedData;
+}
+
+function downloadHtml(text){
+    fetch('download.php',{
+        method: 'POST',
+        headers:{'content-Type': 'text/html'},
+        body:text
+    })
+        .then(response=> response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted.html';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
 }
