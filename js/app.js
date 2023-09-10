@@ -22,7 +22,8 @@ require(['vs/editor/editor.main'], function() {
             previewContainer.innerHTML = parsedText;
 
         }if (previewContent == "html") {
-            previewContainer.innerText = parsedText;
+            monaco.editor.colorize(parsedText, 'html')
+                .then(html => previewContainer.innerHTML = html);
 
         }
     });
@@ -47,7 +48,8 @@ require(['vs/editor/editor.main'], function() {
             let promise =  returnParsedData(editor.getValue());
 
             promise.then(result => {
-                previewContainer.innerText = result;
+                monaco.editor.colorize(result, 'html')
+                    .then(html => previewContainer.innerHTML = html);
             }).catch(error => {
                 console.error("Promiseでエラーが発生しました:", error);
             });
