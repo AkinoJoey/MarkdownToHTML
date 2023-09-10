@@ -9,7 +9,8 @@ require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-e
 require(['vs/editor/editor.main'], function() {
     const editor = monaco.editor.create(document.getElementById('editor-container'), {
         value: '<!-- ここにmarkdownを入力してください -->\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n',
-        language: 'markdown'
+        language: 'markdown',
+        automaticLayout: true 
     });
 
     editor.onDidChangeModelContent(async function(event) {
@@ -97,3 +98,5 @@ function downloadHtml(text){
             window.URL.revokeObjectURL(url);
         });
 }
+
+
