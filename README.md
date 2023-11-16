@@ -27,8 +27,9 @@ https://mdtohtml.yuki-gakiya.com/
   - 使用言語： PHP
   - マークダウン変換: Parsedown
   - パッケージ管理: Composer
-  - Webサーバー: Nginx
+  - Webサーバー: NGINX
   - サーバー: Amazon EC2
+  - SSL/TLS証明書更新: Certbot
 
 ## 期間
 2023年9月9日から3日間かけて制作しました。
